@@ -1,0 +1,3 @@
+<?php
+	$distanceModifier = 10;
+?>

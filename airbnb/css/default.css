@@ -1,0 +1,21 @@
+#search {
+	width: 200px;
+	background: lightblue;
+	float: left;
+	overflow: hidden;
+}
+
+input[type="text"] {
+	width: 90%;
+}
+
+#results {
+	/*overflow: hidden;*/
+	margin-left: 10px;
+	width: calc(100% - 220px);
+	word-wrap:break-word;
+}
+
+div {
+	display: inline-block;
+}

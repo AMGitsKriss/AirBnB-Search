@@ -1,0 +1,151 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+<title>AirBnB Swarm Search</title>
+<link rel="stylesheet" href="css/default.css">
+</head>
+<script>
+
+function getList(form) { //target_address, nights, people, room_type, bed_type, amenities
+
+	// TODO - Put this into a bloody seperate .js file!
+
+	// TODO - Use form results to get absolute negatives and hand them to the search.php file via GET
+		// Minimum nights >= nights
+		// people >= people
+		// room type == room type
+		// bed_type == bed_type
+
+	//
+
+	var nights = 1;
+	if(form.nights.value) nights = form.nights.value;
+	alert("Nights " + nights);
+
+	var people = 1;
+	if(form.people.value) people = form.people.value;
+	alert("People " + people);
+
+	alert("Room " + form.room_type.value);
+
+	// "any" by default.
+	var bedType = "real,futon,pull,airbed,couch"; 
+	// TODO - iterate over the bed_type list and mace a comma seperated list like above from the checked boxes.
+
+	var getSearch = "search.php?nights=" + nights + "&people=" + people + "room=" + form.room_type.value + "&bed=" + bedType;
+
+	// TODO - Because bed_type is also a checklist. I want to build AND statements
+	alert("Real Bed " + form.bed_type[0].checked);
+
+	// Because amenities is name, it's an array of about 36. And I want value/bool pairs. 
+	//alert(form.amenities[0].value);
+	//alert(form.amenities[0].checked);
+	var xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			var jsonData = JSON.parse(this.responseText);
+			var output = "";
+			for(i = 0; i < jsonData.length; i++){
+				output += "<p>" + JSON.stringify(jsonData[i]) + "</p>";
+			}
+			document.getElementById("results").innerHTML = output;
+		// TODO - Handle the results based on the remaining values. Call another function here to handle the data methinks.
+		}
+	};
+	xmlhttp.open("GET", getSearch);
+	xmlhttp.send();
+}
+</script>
+<body>
+
+<div id='search'>
+
+<p>TODO - CSS class. search should be a fixed width anchored to the left.</p>
+
+<form>
+<input type="button" name="submit" value="Search" onclick="getList(this.form)"></p>
+
+<p><label>Postcode: <input type="text" name="target_address"></label>
+<br>A postcode you wish to stay near.</p>
+
+<p><label>Nights to stay: <input type="text" name="nights" value="1"></label></p>
+<p><label>Number of People: <input type="text" name="people" value="1"></label></p>
+<!--<p><label>Number of People: <input type="text" name="nights"></label></p>-->
+<p><label>Room Type: 
+<select name="room_type">
+<option value="Entire home/apt" selected>Entire home/apt</option>
+<option value="Private room">Private room</option>
+<option value="Shared room">Shared room</option>
+</select>
+</label></p>
+
+<p>Bed Type:<br>
+<label><input type="checkbox" name="bed_type" value="Real Bed">Real Bed</label><br>
+<label><input type="checkbox" name="bed_type" value="Futon">Futon</label><br>
+<label><input type="checkbox" name="bed_type" value="Pull-out">AirPull-out</label><br>
+<label><input type="checkbox" name="bed_type" value="Airbed">Airbed</label><br>
+<label><input type="checkbox" name="bed_type" value="Couch">Couch</label>
+</p>
+
+<p>Getting Long-Lat for the given posstcode - https://maps.googleapis.com/maps/api/geocode/json?address=se8 4jf</p>
+
+<!--<label><input type="checkbox" name="amenities" value="hours_check_in">24 Hour Checkin</label><br>-->
+<p><label><input type="checkbox" name="amenities" value="air_conditioning">Air Conditioning</label><br>
+<label><input type="checkbox" name="amenities" value="breakfast">Breakfast</label><br>
+<label><input type="checkbox" name="amenities" value="wireless_intercom">Wireless Intercom</label><br>
+<label><input type="checkbox" name="amenities" value="cable_tv">Cable TV</label><br>
+<label><input type="checkbox" name="amenities" value="carbon_monoxide_detector">Carbon Monoxide Detector</label><br>
+<label><input type="checkbox" name="amenities" value="cats">Cats</label><br>
+<label><input type="checkbox" name="amenities" value="dogs">Dogs</label><br>
+<label><input type="checkbox" name="amenities" value="doorman">Doorman</label><br>
+<label><input type="checkbox" name="amenities" value="dryer">Clothed Dryer</label><br>
+<label><input type="checkbox" name="amenities" value="elevator">Elevator</label><br>
+<label><input type="checkbox" name="amenities" value="essentials">Essentials</label><br>
+<label><input type="checkbox" name="amenities" value="family_friendly">Family Friendly</label><br>
+<label><input type="checkbox" name="amenities" value="fire_extinguisher">Fire Extinguisher</label><br>
+<label><input type="checkbox" name="amenities" value="first_aid">First Aid</label><br>
+<label><input type="checkbox" name="amenities" value="parking">Parking</label><br>
+<label><input type="checkbox" name="amenities" value="gym">Gym</label><br>
+<label><input type="checkbox" name="amenities" value="hair_Dryer">Hair Dryer</label><br>
+<label><input type="checkbox" name="amenities" value="hangers">Hangers</label><br>
+<label><input type="checkbox" name="amenities" value="heating">Heating</label><br>
+<label><input type="checkbox" name="amenities" value="hot_tub">Hot Tub</label><br>
+<label><input type="checkbox" name="amenities" value="fireplace">Fireplace</label><br>
+<label><input type="checkbox" name="amenities" value="internet">internet</label><br>
+<label><input type="checkbox" name="amenities" value="iron">Iron</label><br>
+<label><input type="checkbox" name="amenities" value="kitchen">Kitchen</label><br>
+<label><input type="checkbox" name="amenities" value="workspace">Workspace</label><br>
+<label><input type="checkbox" name="amenities" value="bedroom_lock">Bedroom Lock</label><br>
+<label><input type="checkbox" name="amenities" value="other_pets">Other Pets</label><br>
+<label><input type="checkbox" name="amenities" value="pets_allowed">Pets Allowed</label><br>
+<label><input type="checkbox" name="amenities" value="host_has_pets">Host Has Pets</label><br>
+<label><input type="checkbox" name="amenities" value="pool">Pool</label><br>
+<label><input type="checkbox" name="amenities" value="safety_card">Safety Card</label><br>
+<label><input type="checkbox" name="amenities" value="shampoo">Shampoo</label><br>
+<label><input type="checkbox" name="amenities" value="smoke_detector">Smoke Detector</label><br>
+<label><input type="checkbox" name="amenities" value="smoking_allowed">Smoking Allowed</label><br>
+<label><input type="checkbox" name="amenities" value="suitable_for_events">Suitable for Events</label><br>
+<label><input type="checkbox" name="amenities" value="tv">TV</label><br>
+<label><input type="checkbox" name="amenities" value="washer">Washing Machine</label><br>
+<label><input type="checkbox" name="amenities" value="washer_dryer">Washer Dryer</label><br>
+<label><input type="checkbox" name="amenities" value="wheelchair_accessible">Wheelchair Accessible</label><br>
+</p>
+<p>
+</form>
+</div>
+<div id="results">
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla a lobortis tellus. Curabitur ut ex arcu. Aliquam nisl sem, eleifend non leo eget, volutpat fringilla ligula. Morbi quis rutrum nisl, eget tempor felis. Ut eget metus eget lorem malesuada elementum. Aenean tempus augue quis risus laoreet, at tristique felis sagittis. Sed hendrerit arcu et elit lobortis vestibulum. Cras ut rutrum diam. Nunc nunc lacus, viverra a urna at, vehicula sagittis lacus. Suspendisse pretium nunc sit amet elit ultrices mollis. Vestibulum lobortis quam sit amet blandit aliquet. Pellentesque sollicitudin odio et nisi elementum placerat. Nullam ut posuere lorem.</p>
+
+<p>Phasellus euismod nisl a ipsum vestibulum dapibus. Nulla vel odio sollicitudin, consectetur sapien id, pretium tellus. Duis auctor metus sit amet nulla feugiat, non scelerisque ante condimentum. Curabitur semper eros eu elit pellentesque, sagittis laoreet tellus consectetur. Vestibulum ut tristique tortor, a semper nulla. Mauris eleifend lacus a tellus faucibus, eu suscipit tellus rutrum. Vestibulum a rhoncus arcu.</p>
+
+<p>Pellentesque tincidunt semper gravida. Curabitur ac velit at mi pellentesque porttitor. Nunc rhoncus iaculis lacus ut malesuada. In elementum ligula felis. Fusce orci tortor, efficitur vitae rhoncus non, tempus id felis. Curabitur eu tortor sit amet odio tincidunt sollicitudin at quis eros. Sed sollicitudin dolor ut interdum dictum. Fusce lacinia nec felis sed iaculis. Sed iaculis, eros et porttitor dapibus, ante nibh laoreet risus, a pellentesque purus leo id mi. Etiam ac dictum arcu. Nam vel sollicitudin libero. Quisque elit augue, scelerisque tincidunt aliquam ac, tempus a eros. Nunc lobortis sollicitudin ipsum. Fusce mattis purus quis lacus interdum luctus.</p>
+
+<p>Donec porta dignissim laoreet. Nam dapibus enim a sapien imperdiet sagittis. Mauris eros nibh, varius accumsan tincidunt vel, porta non lacus. Nam mauris erat, semper vel neque in, varius iaculis ipsum. Duis pellentesque, eros id aliquam vehicula, ipsum augue vulputate lectus, sit amet porttitor lacus nunc ac metus. Nulla molestie ornare sodales. Nulla id erat diam. In tristique dolor sem, id euismod tortor auctor nec. Duis sed urna tincidunt enim ornare mollis sit amet eget nibh.</p>
+
+<p>Curabitur sapien risus, accumsan eget orci vel, dignissim dictum dolor. Praesent quis lacus congue, feugiat nisl ac, dapibus metus. Sed pellentesque rutrum lectus ut sollicitudin. Ut purus magna, elementum at ante sed, scelerisque consequat arcu. Duis at massa ex. Mauris in lacus et ipsum laoreet luctus suscipit id elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dapibus quam quis fringilla sodales. Integer nisl dui, pretium non finibus eget, placerat id quam. Maecenas rutrum, libero ornare porttitor sagittis, quam sem gravida ligula, ac cursus ex magna eu ante. Phasellus rutrum ac tortor eget condimentum. Nam euismod nisi vehicula odio sagittis, ac vulputate erat dapibus. Duis lacinia facilisis metus. Duis vel risus sed justo viverra fermentum vitae nec orci. Praesent dolor nisi, facilisis id turpis id, mattis suscipit metus. Vestibulum in nulla ac orci sollicitudin bibendum.</p>
+</div>
+<div id="lng"></div>
+<div id="lat"></div>
+</body>
+</html>
