@@ -4,59 +4,8 @@
 <head>
 <title>AirBnB Swarm Search</title>
 <link rel="stylesheet" href="css/default.css">
+<script src="dfo.js"></script>
 </head>
-<script>
-
-function getList(form) { //target_address, nights, people, room_type, bed_type, amenities
-
-	// TODO - Put this into a bloody seperate .js file!
-
-	// TODO - Use form results to get absolute negatives and hand them to the search.php file via GET
-		// Minimum nights >= nights
-		// people >= people
-		// room type == room type
-		// bed_type == bed_type
-
-	//
-
-	var nights = 1;
-	if(form.nights.value) nights = form.nights.value;
-	alert("Nights " + nights);
-
-	var people = 1;
-	if(form.people.value) people = form.people.value;
-	alert("People " + people);
-
-	alert("Room " + form.room_type.value);
-
-	// "any" by default.
-	var bedType = "real,futon,pull,airbed,couch"; 
-	// TODO - iterate over the bed_type list and mace a comma seperated list like above from the checked boxes.
-
-	var getSearch = "search.php?nights=" + nights + "&people=" + people + "room=" + form.room_type.value + "&bed=" + bedType;
-
-	// TODO - Because bed_type is also a checklist. I want to build AND statements
-	alert("Real Bed " + form.bed_type[0].checked);
-
-	// Because amenities is name, it's an array of about 36. And I want value/bool pairs. 
-	//alert(form.amenities[0].value);
-	//alert(form.amenities[0].checked);
-	var xmlhttp = new XMLHttpRequest();
-	xmlhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			var jsonData = JSON.parse(this.responseText);
-			var output = "";
-			for(i = 0; i < jsonData.length; i++){
-				output += "<p>" + JSON.stringify(jsonData[i]) + "</p>";
-			}
-			document.getElementById("results").innerHTML = output;
-		// TODO - Handle the results based on the remaining values. Call another function here to handle the data methinks.
-		}
-	};
-	xmlhttp.open("GET", getSearch);
-	xmlhttp.send();
-}
-</script>
 <body>
 
 <div id='search'>
@@ -74,18 +23,18 @@ function getList(form) { //target_address, nights, people, room_type, bed_type, 
 <!--<p><label>Number of People: <input type="text" name="nights"></label></p>-->
 <p><label>Room Type: 
 <select name="room_type">
-<option value="Entire home/apt" selected>Entire home/apt</option>
-<option value="Private room">Private room</option>
+<option value="Private room" selected>Private room</option>
 <option value="Shared room">Shared room</option>
+<option value="Entire home/apt">Entire home/apt</option>
 </select>
 </label></p>
 
 <p>Bed Type:<br>
-<label><input type="checkbox" name="bed_type" value="Real Bed">Real Bed</label><br>
-<label><input type="checkbox" name="bed_type" value="Futon">Futon</label><br>
-<label><input type="checkbox" name="bed_type" value="Pull-out">AirPull-out</label><br>
-<label><input type="checkbox" name="bed_type" value="Airbed">Airbed</label><br>
-<label><input type="checkbox" name="bed_type" value="Couch">Couch</label>
+<label><input type="checkbox" name="bed_type" value="'Real Bed'">Real Bed</label><br>
+<label><input type="checkbox" name="bed_type" value="'Futon'">Futon</label><br>
+<label><input type="checkbox" name="bed_type" value="'Pull-out'">AirPull-out</label><br>
+<label><input type="checkbox" name="bed_type" value="'Airbed'">Airbed</label><br>
+<label><input type="checkbox" name="bed_type" value="'Couch'">Couch</label>
 </p>
 
 <p>Getting Long-Lat for the given posstcode - https://maps.googleapis.com/maps/api/geocode/json?address=se8 4jf</p>

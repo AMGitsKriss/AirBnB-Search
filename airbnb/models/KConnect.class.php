@@ -59,5 +59,10 @@
 			$statement = $this->makeStatement($this->sql[$key], $data);
 			return $statement;
 		}
+
+		function naughty($sql){
+			$statement = $this->makeStatement($sql);
+			return $statement;
+		}
 	}
 ?>

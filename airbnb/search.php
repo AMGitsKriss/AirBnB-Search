@@ -10,12 +10,35 @@
 
 	$conn = new KConnect("localhost", "ma301kj_airbnb", "ma301kj", "atlantis1985");
 
+	// Nights, people, room, bed queries! Then building a relevent statement. 
+	// TODO - Escape these statements!
+	$nights = "";
+	$people = "";
+	$roomType = "Private room";
+	$bed = "";
 
-	// TODO - Nights, people, room, bed queries! Then build a relevent statement. 
+	if(isset($_GET['nights'])) $nights = $_GET['nights'];
+	if(isset($_GET['people'])) $people = $_GET['people'];
+	if(isset($_GET['room'])) $roomType = $_GET['room'];
+	if(isset($_GET['bed'])) $bed = $_GET['bed'];
 
+	// Guests_included substituted for accomodates. Was a pre-processing error for that column.
+	$myQuery = "SELECT id, longitude, latitude, bed_type, guests_included FROM searchSpace WHERE 
+					room_type = '$roomType'";
+
+	if($nights != "") $myQuery .= " AND minimum_nights <= '$nights' AND maximum_nights >= '$nights' ";
+	if($people != "") $myQuery .= " AND guests_included >= '$people'";
+	if($bed != "") $myQuery .= " AND bed_type IN ($bed)";
+	
+	// TODO - Too much data. There's a memory error.
+	$myQuery .= " LIMIT 50";
+
+	//echo $myQuery;
+
+	$result = $conn->naughty($myQuery);
 
 	//$result = $conn->query("selectEntries", $_GET['nights'], $_GET['people'], $_GET['room_type'], $_GET['bed_type']);
-	$result = $conn->query("test");
+	//$result = $conn->query("test");
 
 	$tmp = file_get_contents_curl("https://maps.googleapis.com/maps/api/geocode/json?address=se8_4jf");
 	$other = json_decode($tmp);
@@ -33,6 +56,8 @@
 	}
 
 	//print_r($other->results[0]->geometry->location);
+	
+	//THIS IS THE RESULTS
 	print_r(json_encode($output3));
 
 
