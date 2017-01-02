@@ -40,9 +40,11 @@ function getList(form) { //target_address, nights, people, room_type, bed_type, 
 	xmlhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			var jsonData = JSON.parse(this.responseText);
+			alert(fitness(amenities(form.amenities), jsonData[0]));
 			var output = "";
 			for(i = 0; i < jsonData.length; i++){
 				output += "<p>" + JSON.stringify(jsonData[i]) + "</p>";
+				//output += JSON.stringify(jsonData[i]) ;
 			}
 			document.getElementById("results").innerHTML = output;
 		// TODO - Handle the results based on the remaining values. Call another function here to handle the data methinks.
@@ -53,21 +55,44 @@ function getList(form) { //target_address, nights, people, room_type, bed_type, 
 }
 
 
-function amenities(form){
-	// TODO - Iterate over all of the form.amenities[i].value and form.amenities[i].checked values. Return a list of the checked values.
-	return 0;
+function amenities(amenities){
+	// Iterate over all of the amenities[i].value and amenities[i].checked values. Return a list of the checked values.
+	var list = [];
+	for(i = 0; i < amenities.length; i++){
+		if(amenities[i].checked){
+			list.push(amenities[i].value);
+		}
+	}
+	return list;
 }
 
 function fitness(amenities, entity){
 	// Wanted amenities are x1.0 when present. x0.5 when not.
-	// weight = priceWeight
 
-	// TODO - Iterate over amenities list entity[amenities[i]], getting the value [0,1]. 
-		// IF 1, multiply by 1, ELIF 0 multiply by 0.5
+	var amenityModifier = 1;
+
+	// Iterate over amenities list entity[amenities[i]], getting the value [0,1].
+	for(i = 0; i < amenities.length; i++){
+		console.log(amenities[i]);
+		if(entity[amenities[i]] == 1) {
+			console.log("Value " + entity[amenities[i]] + " treated as 'true'");
+		}
+		else if(entity[amenities[i]] == 0){
+			console.log("Value " + entity[amenities[i]] + " treated as 'false'");
+			amenityModifier *= 0.5;
+		}
+	}
 
 	// Avoid throwing a negative number IF the distanceWeights contain a negative. 
 	if(entity.distanceWeight <= 0) entity.distanceWeight = 0.01;
 
-	var fitness = (entity.weight/10) * (entity.distanceWeight);
+	//Ditto for scores
+	var review_score = 10;
+	if(entity.review_scores_rating > 10) review_score = entity.review_scores_rating;
+
+	console.log("Price: " + (entity.weight/10) + ", Distance: " + (entity.distanceWeight) + ", Score: " + (review_score/10) + ", Amenities: " + amenityModifier);
+	// fitness = goodness of price * goodness of distance * user score
+	var fitness = (entity.weight/10) * (entity.distanceWeight) * (review_score/10) * amenityModifier;
+	console.log("Fitness: " + fitness);
 	return fitness;
 }

@@ -34,7 +34,7 @@
 	
 	// TODO - Too much data. There's a memory error. 
 		// Perhaps restrict by euclidean distance to try and reduce the number of results. 
-	$myQuery .= " LIMIT 50";
+	$myQuery .= " ORDER BY RAND() LIMIT 50";
 
 	//echo $myQuery;
 
