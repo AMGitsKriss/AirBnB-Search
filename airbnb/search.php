@@ -16,21 +16,24 @@
 	$people = "";
 	$roomType = "Private room";
 	$bed = "";
+	$address = "London";
 
 	if(isset($_GET['nights'])) $nights = $_GET['nights'];
 	if(isset($_GET['people'])) $people = $_GET['people'];
 	if(isset($_GET['room'])) $roomType = $_GET['room'];
 	if(isset($_GET['bed'])) $bed = $_GET['bed'];
+	if(isset($_GET['address'])) $address = str_replace(' ', '_', $_GET['address']);
 
 	// Guests_included substituted for accomodates. Was a pre-processing error for that column.
-	$myQuery = "SELECT id, longitude, latitude, bed_type, guests_included FROM searchSpace WHERE 
-					room_type = '$roomType'";
+	//$myQuery = "SELECT id, longitude, latitude, bed_type, guests_included, price, weight FROM searchSpace WHERE room_type = '$roomType'";
+	$myQuery = "SELECT * FROM searchSpace WHERE room_type = '$roomType'";
 
 	if($nights != "") $myQuery .= " AND minimum_nights <= '$nights' AND maximum_nights >= '$nights' ";
 	if($people != "") $myQuery .= " AND guests_included >= '$people'";
 	if($bed != "") $myQuery .= " AND bed_type IN ($bed)";
 	
-	// TODO - Too much data. There's a memory error.
+	// TODO - Too much data. There's a memory error. 
+		// Perhaps restrict by euclidean distance to try and reduce the number of results. 
 	$myQuery .= " LIMIT 50";
 
 	//echo $myQuery;
@@ -40,7 +43,8 @@
 	//$result = $conn->query("selectEntries", $_GET['nights'], $_GET['people'], $_GET['room_type'], $_GET['bed_type']);
 	//$result = $conn->query("test");
 
-	$tmp = file_get_contents_curl("https://maps.googleapis.com/maps/api/geocode/json?address=se8_4jf");
+	$queryUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=".$address;
+	$tmp = file_get_contents_curl($queryUrl);
 	$other = json_decode($tmp);
 	$output1 = $result->fetchAll(PDO::FETCH_ASSOC);
 	$output2 = json_encode($output1);

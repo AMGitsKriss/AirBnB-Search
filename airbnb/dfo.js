@@ -7,6 +7,7 @@ function getList(form) { //target_address, nights, people, room_type, bed_type, 
 		// room type == room type
 		// bed_type == bed_type
 	//
+	var address = "address=" + form.address.value;
 
 	var nights = "";
 	if(form.nights.value) nights = "nights=" + form.nights.value;
@@ -30,7 +31,7 @@ function getList(form) { //target_address, nights, people, room_type, bed_type, 
 	}
 	//alert(bedType);
 
-	var getSearch = "search.php?" + nights + "&" + people + "&" + room + "&" + bedType;
+	var getSearch = "search.php?" + address + "&" + nights + "&" + people + "&" + room + "&" + bedType;
 
 	//Clear the results field
 	document.getElementById("results").innerHTML = ""
@@ -49,4 +50,24 @@ function getList(form) { //target_address, nights, people, room_type, bed_type, 
 	};
 	xmlhttp.open("GET", getSearch);
 	xmlhttp.send();
+}
+
+
+function amenities(form){
+	// TODO - Iterate over all of the form.amenities[i].value and form.amenities[i].checked values. Return a list of the checked values.
+	return 0;
+}
+
+function fitness(amenities, entity){
+	// Wanted amenities are x1.0 when present. x0.5 when not.
+	// weight = priceWeight
+
+	// TODO - Iterate over amenities list entity[amenities[i]], getting the value [0,1]. 
+		// IF 1, multiply by 1, ELIF 0 multiply by 0.5
+
+	// Avoid throwing a negative number IF the distanceWeights contain a negative. 
+	if(entity.distanceWeight <= 0) entity.distanceWeight = 0.01;
+
+	var fitness = (entity.weight/10) * (entity.distanceWeight);
+	return fitness;
 }
