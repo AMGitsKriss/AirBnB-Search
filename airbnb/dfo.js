@@ -1,6 +1,13 @@
 
 var dimensions = 2;
-popSize = 10;
+var popSize = 10;
+var bestIndex = -1;
+
+//The min and max values for all the listings.
+var longMin = -0.5013048470;
+var longMax = 0.3175229200;
+var latMin = 51.2927186100;
+var latMax = 51.6860494400;
 
 function getList(form) { //target_address, nights, people, room_type, bed_type, amenities
 
@@ -43,7 +50,7 @@ function getList(form) { //target_address, nights, people, room_type, bed_type, 
 	xmlhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			var jsonData = JSON.parse(this.responseText);
-			alert(fitness(amenities(form.amenities), jsonData[0]));
+			//alert(fitness(amenities(form.amenities), jsonData[0]));
 			var output = "";
 			for(i = 0; i < jsonData.length; i++){
 				output += "<p>" + JSON.stringify(jsonData[i]) + "</p>";
@@ -55,6 +62,15 @@ function getList(form) { //target_address, nights, people, room_type, bed_type, 
 	};
 	xmlhttp.open("GET", getSearch);
 	xmlhttp.send();
+
+	// TESTING IN CONSOLE
+
+	var tempPos = getRandPos();
+	var tempFly = new Fly(tempPos);
+	console.log("getRandPos: "+tempPos);
+	console.log("Making a fly... " + tempFly.getPos());
+	tempFly.setPos(getRandPos());
+	console.log("Updating fly... " + tempFly.getPos());
 }
 
 function dfo(){
@@ -62,7 +78,7 @@ function dfo(){
 
 	for(i = 0; i < popSize; i++){
 		// TODO - variable references
-		fly[i] = new Fly(utils.getRandPos());
+		fly[i] = new Fly(getRandPos());
 	}
 
 	// While the break condition *isn't* fulfilled.
@@ -106,19 +122,36 @@ function dfo(){
 	}
 }
 
-function Fly(){
-	// TODO - Build Fly object
-	var temp = {};
+function Fly(position){
+	// Build Fly object
+	var thisFly = {
+		pos : position,
+		exPos : position,
+		fitness : -1,
+		getPos : function() {
+			return this.pos;
+		},
+		setPos : function(position){
+			this.exPos = this.pos;
+			this.pos = position;
+		},
+		getExPos : function(){
+			return this.exPos;
+		},
+		setFitness : function(f){
+			this.fitness = f;
+		}
+	}
+	return thisFly;
 }
 
-// TODO
-function setPos(){
-
-}
-
-// TODO
-function getPos(){
-
+function getRandPos(){
+	// Return coordinates within the long-lat min-max boundries. 
+	var range = longMax-longMin;
+	var longitude = (Math.random()*range)+longMin;
+	range = latMin-latMax;
+	var latitude = (Math.random()*range)+latMin;
+	return [longitude, latitude];
 }
 
 // TODO - Fix for JS
@@ -127,26 +160,25 @@ function getNeighbours(index) {
 	Global.rightN = curr + 1;
 
 	if (curr == 0)
-		Global.leftN = Global.popSize - 1;
-	if (curr == Global.popSize - 1)
+		Global.leftN = popSize - 1;
+	if (curr == popSize - 1)
 		Global.rightN = 0;
 }
 
+// Finds the best fly. Pretty self explanitory...
 function findBestFly() {
-		var max = -1;
+	var max = -1;
 
-		// TODO - variable references
-		for (int i = 0; i < popSize; i++) {
-			if (fly[i].getFitness() > max) {
-				min = Global.fly[i].getFitness();
-				bestIndex = i;
-			}
+	for (i = 0; i < popSize; i++) {
+		if (fly[i].getFitness() > max) {
+			max = fly[i].getFitness();
+			bestIndex = i;
 		}
 	}
+}
 
-
+// Iterate over all of the amenities[i].value and amenities[i].checked values. Return a list of the checked values.
 function amenities(amenities){
-	// Iterate over all of the amenities[i].value and amenities[i].checked values. Return a list of the checked values.
 	var list = [];
 	for(i = 0; i < amenities.length; i++){
 		if(amenities[i].checked){
@@ -156,6 +188,7 @@ function amenities(amenities){
 	return list;
 }
 
+// Fitness calculations. Because yeah...
 function fitness(amenities, entity){
 	// Wanted amenities are x1.0 when present. x0.5 when not.
 
