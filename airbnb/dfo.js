@@ -1,4 +1,7 @@
 
+var dimensions = 2;
+popSize = 10;
+
 function getList(form) { //target_address, nights, people, room_type, bed_type, amenities
 
 	// Use form results to get absolute negatives and hand them to the search.php file via GET
@@ -53,6 +56,93 @@ function getList(form) { //target_address, nights, people, room_type, bed_type, 
 	xmlhttp.open("GET", getSearch);
 	xmlhttp.send();
 }
+
+function dfo(){
+	var fly = Array(popSize);
+
+	for(i = 0; i < popSize; i++){
+		// TODO - variable references
+		fly[i] = new Fly(utils.getRandPos());
+	}
+
+	// While the break condition *isn't* fulfilled.
+	while(!TODOcondition){
+		// TODO - If... What is less than what?
+		if (Global.evalCount < Global.FE_allowed) { //TODO
+			for(i = 0; i < popSize; i++){
+				// Evaluate each fly's fitness.
+				Global.fly[i].setFitness(utils.evaluate(Global.fly[i].getPos()));
+			}
+			utils.findBestFly();
+			for(i = 0; i < popSize; i++){
+				getNeighbours(i);
+				// TODO - Variables to JS 
+				var leftP = Global.fly[Global.leftN].fitness();
+				var rightP = Global.fly[Global.rightN].fitness();
+
+				var chosen;
+				if (leftP < rightP)
+					chosen = Global.leftN;
+				else
+					chosen = Global.rightN;
+
+				var dCounter = 0;
+				// Update equations
+				var temp = Array(dimensions);
+				for(d = 0; d < dimensions; d++){
+					temp[d] = flat[chosen].getPos(d) + random(1) * (fly[bestIndex].getPos(d) - fly[i].getPos(d));
+					//Disturbance
+					// TODO - Disturb threshod variable
+					if (random(1) < disturbThreshold){
+								//TODO - I don't have a range for this search space. eyeall it based on GPS distance
+								temp[d] = random(-Global.imgW, Global.imgW);
+								dCounter++;
+					}
+				}
+				fly[i].setPos(temp); // TODO - Make sure this isn't a pointer
+
+			}
+		}
+	}
+}
+
+function Fly(){
+	// TODO - Build Fly object
+	var temp = {};
+}
+
+// TODO
+function setPos(){
+
+}
+
+// TODO
+function getPos(){
+
+}
+
+// TODO - Fix for JS
+function getNeighbours(index) {
+	Global.leftN = curr - 1;
+	Global.rightN = curr + 1;
+
+	if (curr == 0)
+		Global.leftN = Global.popSize - 1;
+	if (curr == Global.popSize - 1)
+		Global.rightN = 0;
+}
+
+function findBestFly() {
+		var max = -1;
+
+		// TODO - variable references
+		for (int i = 0; i < popSize; i++) {
+			if (fly[i].getFitness() > max) {
+				min = Global.fly[i].getFitness();
+				bestIndex = i;
+			}
+		}
+	}
 
 
 function amenities(amenities){
