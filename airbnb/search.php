@@ -1,6 +1,8 @@
 <?php
 	error_reporting(E_ALL);
 	ini_set('display_errors', true);
+	//TODO - THIS IS A BAAAAD MOVE...
+	ini_set('memory_limit','512M');
 
 	require("models/KConnect.class.php");
 	require("config.php");
@@ -34,8 +36,7 @@
 	
 	// TODO - Too much data. There's a memory error. 
 		// Perhaps restrict by euclidean distance to try and reduce the number of results. 
-	$myQuery .= " ORDER BY RAND() LIMIT 50";
-
+	//$myQuery .= " ORDER BY RAND() LIMIT 50";
 	//echo $myQuery;
 
 	$result = $conn->naughty($myQuery);

@@ -10,8 +10,6 @@
 
 <div id='search'>
 
-<p>TODO - CSS class. search should be a fixed width anchored to the left.</p>
-
 <form>
 <input type="button" name="submit" value="Search" onclick="getList(this.form)"></p>
 
@@ -37,10 +35,7 @@
 <label><input type="checkbox" name="bed_type" value="'Couch'">Couch</label>
 </p>
 
-<p>Getting Long-Lat for the given posstcode - https://maps.googleapis.com/maps/api/geocode/json?address=se8 4jf</p>
-
-<!--<label><input type="checkbox" name="amenities" value="hours_check_in">24 Hour Checkin</label><br>-->
-<p><label><input type="checkbox" name="amenities" value="air_conditioning" checked>Air Conditioning</label><br>
+<p><label><input type="checkbox" name="amenities" value="air_conditioning">Air Conditioning</label><br>
 <label><input type="checkbox" name="amenities" value="breakfast" checked>Breakfast</label><br>
 <label><input type="checkbox" name="amenities" value="wireless_intercom">Wireless Intercom</label><br>
 <label><input type="checkbox" name="amenities" value="cable_tv">Cable TV</label><br>
@@ -50,7 +45,7 @@
 <label><input type="checkbox" name="amenities" value="doorman">Doorman</label><br>
 <label><input type="checkbox" name="amenities" value="dryer">Clothed Dryer</label><br>
 <label><input type="checkbox" name="amenities" value="elevator">Elevator</label><br>
-<label><input type="checkbox" name="amenities" value="essentials">Essentials</label><br>
+<label><input type="checkbox" name="amenities" value="essentials" checked>Essentials</label><br>
 <label><input type="checkbox" name="amenities" value="family_friendly">Family Friendly</label><br>
 <label><input type="checkbox" name="amenities" value="fire_extinguisher">Fire Extinguisher</label><br>
 <label><input type="checkbox" name="amenities" value="first_aid">First Aid</label><br>
@@ -61,7 +56,7 @@
 <label><input type="checkbox" name="amenities" value="heating">Heating</label><br>
 <label><input type="checkbox" name="amenities" value="hot_tub">Hot Tub</label><br>
 <label><input type="checkbox" name="amenities" value="fireplace">Fireplace</label><br>
-<label><input type="checkbox" name="amenities" value="internet">internet</label><br>
+<label><input type="checkbox" name="amenities" value="internet" checked>Internet</label><br>
 <label><input type="checkbox" name="amenities" value="iron">Iron</label><br>
 <label><input type="checkbox" name="amenities" value="kitchen">Kitchen</label><br>
 <label><input type="checkbox" name="amenities" value="workspace">Workspace</label><br>
@@ -84,17 +79,17 @@
 </form>
 </div>
 <div id="results">
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla a lobortis tellus. Curabitur ut ex arcu. Aliquam nisl sem, eleifend non leo eget, volutpat fringilla ligula. Morbi quis rutrum nisl, eget tempor felis. Ut eget metus eget lorem malesuada elementum. Aenean tempus augue quis risus laoreet, at tristique felis sagittis. Sed hendrerit arcu et elit lobortis vestibulum. Cras ut rutrum diam. Nunc nunc lacus, viverra a urna at, vehicula sagittis lacus. Suspendisse pretium nunc sit amet elit ultrices mollis. Vestibulum lobortis quam sit amet blandit aliquet. Pellentesque sollicitudin odio et nisi elementum placerat. Nullam ut posuere lorem.</p>
+<p>1. Enter your target postcode.</p>
 
-<p>Phasellus euismod nisl a ipsum vestibulum dapibus. Nulla vel odio sollicitudin, consectetur sapien id, pretium tellus. Duis auctor metus sit amet nulla feugiat, non scelerisque ante condimentum. Curabitur semper eros eu elit pellentesque, sagittis laoreet tellus consectetur. Vestibulum ut tristique tortor, a semper nulla. Mauris eleifend lacus a tellus faucibus, eu suscipit tellus rutrum. Vestibulum a rhoncus arcu.</p>
+<p>2. Select how logn you want to stay, and for how many people.</p>
 
-<p>Pellentesque tincidunt semper gravida. Curabitur ac velit at mi pellentesque porttitor. Nunc rhoncus iaculis lacus ut malesuada. In elementum ligula felis. Fusce orci tortor, efficitur vitae rhoncus non, tempus id felis. Curabitur eu tortor sit amet odio tincidunt sollicitudin at quis eros. Sed sollicitudin dolor ut interdum dictum. Fusce lacinia nec felis sed iaculis. Sed iaculis, eros et porttitor dapibus, ante nibh laoreet risus, a pellentesque purus leo id mi. Etiam ac dictum arcu. Nam vel sollicitudin libero. Quisque elit augue, scelerisque tincidunt aliquam ac, tempus a eros. Nunc lobortis sollicitudin ipsum. Fusce mattis purus quis lacus interdum luctus.</p>
+<p>3. Choose the room type you want.</p>
 
-<p>Donec porta dignissim laoreet. Nam dapibus enim a sapien imperdiet sagittis. Mauris eros nibh, varius accumsan tincidunt vel, porta non lacus. Nam mauris erat, semper vel neque in, varius iaculis ipsum. Duis pellentesque, eros id aliquam vehicula, ipsum augue vulputate lectus, sit amet porttitor lacus nunc ac metus. Nulla molestie ornare sodales. Nulla id erat diam. In tristique dolor sem, id euismod tortor auctor nec. Duis sed urna tincidunt enim ornare mollis sit amet eget nibh.</p>
+<p>4. Select the types of bed you're willing to sleep on. If not are checked, all will be considered.</p>
 
-<p>Curabitur sapien risus, accumsan eget orci vel, dignissim dictum dolor. Praesent quis lacus congue, feugiat nisl ac, dapibus metus. Sed pellentesque rutrum lectus ut sollicitudin. Ut purus magna, elementum at ante sed, scelerisque consequat arcu. Duis at massa ex. Mauris in lacus et ipsum laoreet luctus suscipit id elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus dapibus quam quis fringilla sodales. Integer nisl dui, pretium non finibus eget, placerat id quam. Maecenas rutrum, libero ornare porttitor sagittis, quam sem gravida ligula, ac cursus ex magna eu ante. Phasellus rutrum ac tortor eget condimentum. Nam euismod nisi vehicula odio sagittis, ac vulputate erat dapibus. Duis lacinia facilisis metus. Duis vel risus sed justo viverra fermentum vitae nec orci. Praesent dolor nisi, facilisis id turpis id, mattis suscipit metus. Vestibulum in nulla ac orci sollicitudin bibendum.</p>
+<p>5. Choose the amenities that you want.</p>
+
+<p>6. Hit Search!</p>
 </div>
-<div id="lng"></div>
-<div id="lat"></div>
 </body>
 </html>

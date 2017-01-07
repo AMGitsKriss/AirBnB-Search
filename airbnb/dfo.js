@@ -44,13 +44,14 @@ function getList(form) { //target_address, nights, people, room_type, bed_type, 
 	var getSearch = "search.php?" + address + "&" + nights + "&" + people + "&" + room + "&" + bedType;
 
 	//Clear the results field
-	document.getElementById("results").innerHTML = ""
+	document.getElementById("results").innerHTML = "<p>Working... Please be patient.</p>";
 
 	var xmlhttp = new XMLHttpRequest();
 	xmlhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			var jsonData = JSON.parse(this.responseText);
 			//alert(fitness(amenities(form.amenities), jsonData[0]));
+			alert(crawl(form, jsonData));
 			var output = "";
 			for(i = 0; i < jsonData.length; i++){
 				output += "<p>" + JSON.stringify(jsonData[i]) + "</p>";
@@ -65,12 +66,14 @@ function getList(form) { //target_address, nights, people, room_type, bed_type, 
 
 	// TESTING IN CONSOLE
 
+	/*
 	var tempPos = getRandPos();
 	var tempFly = new Fly(tempPos);
 	console.log("getRandPos: "+tempPos);
 	console.log("Making a fly... " + tempFly.getPos());
 	tempFly.setPos(getRandPos());
 	console.log("Updating fly... " + tempFly.getPos());
+	*/
 }
 
 function dfo(){
@@ -122,8 +125,34 @@ function dfo(){
 	}
 }
 
+function crawl(form, jsonData){
+	// TODO - Iterate over every given result, calculate fitness, then make note of the best fitness. 
+	// TODO - We're accessing more globals that we should. 
+
+	// Where entity is the listing.
+	var myAmenities = amenities(form.amenities);
+	var bestId = -1;
+	var bestFitness = -1;
+
+	console.log("ID: " + bestId + " | Fitness: " + bestFitness + " | Result qty: " + jsonData.length);
+
+	for(i = 0; i < jsonData.length; i++){
+		console.log(i);
+		var listingFitness = fitness(myAmenities, jsonData[i]);
+		if(listingFitness > bestFitness){
+			bestId = jsonData[i]['id'];
+			bestFitness = listingFitness;
+			console.log("ID: " + bestId + " | Fitness: " + bestFitness);
+		}
+	}
+
+	console.log("ID: " + bestId + " | Fitness: " + bestFitness);
+
+	return bestId;
+}
+
 function Fly(position){
-	// Build Fly object
+	// Build Fly object. Kinda self explanitory. 
 	var thisFly = {
 		pos : position,
 		exPos : position,
@@ -195,14 +224,14 @@ function fitness(amenities, entity){
 	var amenityModifier = 1;
 
 	// Iterate over amenities list entity[amenities[i]], getting the value [0,1].
-	for(i = 0; i < amenities.length; i++){
-		console.log(amenities[i]);
-		if(entity[amenities[i]] == 1) {
-			console.log("Value " + entity[amenities[i]] + " treated as 'true'");
-		}
-		else if(entity[amenities[i]] == 0){
-			console.log("Value " + entity[amenities[i]] + " treated as 'false'");
+	for(j = 0; j < amenities.length; j++){
+		//console.log(amenities[i]);
+		if(entity[amenities[j]] != 1) {
+			//console.log("Value " + entity[amenities[i]] + " treated as 'false'");
 			amenityModifier *= 0.5;
+		}
+		else{
+			//console.log("Value " + entity[amenities[i]] + " treated as 'true'");
 		}
 	}
 
@@ -214,8 +243,8 @@ function fitness(amenities, entity){
 	if(entity.review_scores_rating > 10) review_score = entity.review_scores_rating;
 
 	console.log("Price: " + (entity.weight/10) + ", Distance: " + (entity.distanceWeight) + ", Score: " + (review_score/10) + ", Amenities: " + amenityModifier);
-	// fitness = goodness of price * goodness of distance * user score
-	var fitness = (entity.weight/10) * (entity.distanceWeight) * (review_score/10) * amenityModifier;
-	console.log("Fitness: " + fitness);
+	// fitness = goodness of price * goodness of distance * user score * amenityModifier
+	var fitness = (entity.weight/10) * (entity.distanceWeight/10) * (review_score/10) * amenityModifier;
+	//console.log("Fitness: " + fitness);
 	return fitness;
 }
